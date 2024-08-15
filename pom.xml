@@ -9,7 +9,7 @@
 		<version>2.7.9</version>
 	</parent>
 	<groupId>com.digitalfen</groupId>
-	<artifactId>jwissengine</artifactId>
+	<artifactId>jwisstool</artifactId>
 	<version>0.0.01-SNAPSHOT</version>
 	<name>jwisstool</name>
 	<description>jwisstool</description>
