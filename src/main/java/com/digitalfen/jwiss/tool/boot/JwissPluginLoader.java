@@ -74,9 +74,6 @@ public class JwissPluginLoader {
 	Set<Class<? extends JwissPluginInterface>> pluginClasses = reflections
 		.getSubTypesOf(JwissPluginInterface.class);
 
-	JwissLogger.printer
-		.debug("Found " + pluginClasses.size() + " plugin class references.");
-
 	for (Class<? extends JwissPluginInterface> pluginClass : pluginClasses) {
 
 	    if (pluginClass.isAnnotationPresent(JwissPluginMetadata.class)) {

@@ -71,9 +71,6 @@ public class JwissAddonLoader {
 	Set<Class<? extends JwissAddonInterface>> addonClasses = reflections
 		.getSubTypesOf(JwissAddonInterface.class);
 
-	JwissLogger.printer
-		.debug("Found " + addonClasses.size() + " addon class references.");
-
 	for (Class<? extends JwissAddonInterface> addonClass : addonClasses) {
 	    if (addonClass.isAnnotationPresent(JwissAddonMetadata.class)) {
 		

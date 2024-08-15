@@ -10,8 +10,8 @@ import com.digitalfen.jwiss.devkit.dto.response.JwissOutDTO;
 import com.digitalfen.jwiss.devkit.handlers.JwissCache;
 import com.digitalfen.jwiss.devkit.handlers.JwissLogger;
 import com.digitalfen.jwiss.devkit.interfaces.JwissPluginInterface;
-import com.digitalfen.jwiss.devkit.model.JwissArgument;
-import com.digitalfen.jwiss.devkit.model.JwissCommand;
+import com.digitalfen.jwiss.devkit.model.Argument;
+import com.digitalfen.jwiss.devkit.model.Command;
 
 @Service
 public class JwissEngineService {
@@ -22,7 +22,7 @@ public class JwissEngineService {
 
 	try {
 
-	    for (JwissCommand command : inDTO.getCommands()) {
+	    for (Command command : inDTO.getCommands()) {
 
 		JwissPluginInterface plugin = JwissCache.plugins
 			.get(command.getParentName());
@@ -43,7 +43,7 @@ public class JwissEngineService {
 				    .getAnnotation(JwissCommandMetadata.class);
 			    if (commandMetadata.usage().equals(command.getUsage())) {
 
-				for (JwissArgument argument : command.getArguments()) {
+				for (Argument argument : command.getArguments()) {
 				    JwissCache.configurations.put(plugin,
 					    argument.getKey(),
 					    argument.getValue());
