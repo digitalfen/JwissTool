@@ -10,6 +10,9 @@ import com.digitalfen.jwiss.devkit.dto.request.JwissInDTO;
 import com.digitalfen.jwiss.devkit.dto.response.JwissOutDTO;
 import com.digitalfen.jwiss.tool.service.JwissEngineService;
 
+/**
+ * Rest Controller for JwissTool inputs
+ */
 @RestController
 @RequestMapping(value = "/api")
 public class JwissEngineController {
@@ -17,6 +20,12 @@ public class JwissEngineController {
     @Autowired
     private JwissEngineService service;
 
+    /**
+     * Execute command from input
+     * 
+     * @param JwissInDTO;
+     * @return JwissOutDTO;
+     */
     @PostMapping(value = "/execute")
     public JwissOutDTO execute(@RequestBody JwissInDTO inDTO) {
 

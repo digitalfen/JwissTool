@@ -17,12 +17,23 @@ import com.digitalfen.jwiss.devkit.annotations.JwissAddonMetadata;
 import com.digitalfen.jwiss.devkit.handlers.JwissCache;
 import com.digitalfen.jwiss.devkit.handlers.JwissLogger;
 import com.digitalfen.jwiss.devkit.interfaces.JwissAddonInterface;
+import com.digitalfen.jwiss.devkit.interfaces.JwissLoaderInterface;
 
 import lombok.NoArgsConstructor;
 
+/**
+ * Load and cache instaled addons in startup.
+ * 
+ */
 @NoArgsConstructor
-public class JwissAddonLoader {
+public class JwissAddonLoader implements JwissLoaderInterface {
 
+    /**
+     * JwissLoaderInterface
+     * 
+     * @return void
+     */
+    @Override
     public void init() {
 	try {
 	    JwissLogger.printer.info("Checking Installed Addons...");
@@ -37,6 +48,11 @@ public class JwissAddonLoader {
 	}
     }
 
+    /**
+     * Load and cache addons
+     * 
+     * @return void
+     */
     public void loadAddons() throws Exception {
 	File addonsDir = new File("addons");
 
@@ -73,7 +89,7 @@ public class JwissAddonLoader {
 
 	for (Class<? extends JwissAddonInterface> addonClass : addonClasses) {
 	    if (addonClass.isAnnotationPresent(JwissAddonMetadata.class)) {
-		
+
 		JwissAddonMetadata addonMetadata = addonClass
 			.getAnnotation(JwissAddonMetadata.class);
 
@@ -95,6 +111,11 @@ public class JwissAddonLoader {
 	JwissLogger.printer.info("Getting Class reference from JAR files Done.");
     }
 
+    /**
+     * Start cached addons
+     * 
+     * @return void
+     */
     public void startAddons() {
 
 	for (Entry<String, JwissAddonInterface> addon : JwissCache.addons.getMap()

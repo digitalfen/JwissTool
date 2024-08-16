@@ -16,21 +16,31 @@ import java.util.Properties;
 import com.digitalfen.jwiss.devkit.handlers.JwissCache;
 import com.digitalfen.jwiss.devkit.handlers.JwissLogger;
 import com.digitalfen.jwiss.devkit.handlers.JwissUtils;
+import com.digitalfen.jwiss.devkit.interfaces.JwissLoaderInterface;
 
 import lombok.NoArgsConstructor;
 
+/**
+ * Read, load and cache all configurations in startup.
+ * 
+ */
 @NoArgsConstructor
-public class JwissConfigLoader {
+public class JwissConfigLoader implements JwissLoaderInterface {
 
     /**
-     * Read, load and cache all configurations. Method by method.
+     * JwissLoaderInterface
+     * 
+     * @return void
      */
+    @Override
     public void init() {
 	loadGlobalConfig();
     }
 
     /**
-     * Read, load and cache global configurations
+     * Load and cache global configurations
+     * 
+     * @return void
      */
     private void loadGlobalConfig() {
 
@@ -55,10 +65,17 @@ public class JwissConfigLoader {
 
     }
 
+    /**
+     * Read values from jwiss-default.properties in src/main/resources
+     * 
+     * @param configName string
+     * 
+     * @return Map<String, String>
+     */
     private Map<String, String> readValues(String configName) throws Exception {
 	boolean isValid = false;
-	Map<String, String> definedCfg = readDefinedValues(configName);
-	Map<String, String[]> defaultCfg = readDefaultValues("jwiss.properties");
+	Map<String, String> definedCfg = readDefinedValues();
+	Map<String, String[]> defaultCfg = readDefaultValues();
 
 	for (Entry<String, String> option : definedCfg.entrySet()) {
 	    if (defaultCfg.containsKey(option.getKey())) {
@@ -76,10 +93,16 @@ public class JwissConfigLoader {
 
     };
 
-    private Map<String, String[]> readDefaultValues(String configName) {
+    /**
+     * Read internal values from jwiss-default.properties in src/main/resources
+     * 
+     * @return Map<String, String>
+     */
+    private Map<String, String[]> readDefaultValues() {
 	Map<String, String[]> propertiesMap = new HashMap<>();
 	Map<String, List<String>> tempMap = new HashMap<>();
 	Map<String, String> activeToOptionMap = new HashMap<>();
+	String configName = "jwiss-default.properties";
 
 	try (InputStream inputStream = JwissUtils.class.getClassLoader()
 		.getResourceAsStream(configName)) {
@@ -127,13 +150,18 @@ public class JwissConfigLoader {
 	return propertiesMap;
     }
 
-    private Map<String, String> readDefinedValues(String fileName) {
+    /**
+     * Read external values from global.config in /config
+     * 
+     * @return Map<String, String>
+     */
+    private Map<String, String> readDefinedValues() {
 	String configDirPath = new File("").getAbsolutePath();
 
 	String filePath = configDirPath + File.separator
 		+ "config"
 		+ File.separator
-		+ fileName
+		+ "global"
 		+ ".conf";
 
 	Map<String, String> propertiesMap = new HashMap<>();

@@ -15,13 +15,24 @@ import org.reflections.util.ConfigurationBuilder;
 import com.digitalfen.jwiss.devkit.annotations.JwissPluginMetadata;
 import com.digitalfen.jwiss.devkit.handlers.JwissCache;
 import com.digitalfen.jwiss.devkit.handlers.JwissLogger;
+import com.digitalfen.jwiss.devkit.interfaces.JwissLoaderInterface;
 import com.digitalfen.jwiss.devkit.interfaces.JwissPluginInterface;
 
 import lombok.NoArgsConstructor;
 
+/**
+ * Load and cache instaled plugins in startup.
+ * 
+ */
 @NoArgsConstructor
-public class JwissPluginLoader {
+public class JwissPluginLoader implements JwissLoaderInterface {
 
+    /**
+     * JwissLoaderInterface
+     * 
+     * @return void
+     */
+    @Override
     public void init() {
 
 	try {
@@ -40,6 +51,11 @@ public class JwissPluginLoader {
 
     }
 
+    /**
+     * Load and cache plugins
+     * 
+     * @return void
+     */
     public void loadPlugins() throws Exception {
 	File pluginsDir = new File("plugins");
 

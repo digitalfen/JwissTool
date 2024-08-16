@@ -13,9 +13,18 @@ import com.digitalfen.jwiss.devkit.interfaces.JwissPluginInterface;
 import com.digitalfen.jwiss.devkit.model.Argument;
 import com.digitalfen.jwiss.devkit.model.Command;
 
+/**
+ * Engine Service for commands execution
+ */
 @Service
 public class JwissEngineService {
 
+    /**
+     * Engine Service for commands execution
+     * 
+     * @param inDTO JwissInDTO;
+     * @return JwissOutDTO;
+     */
     public JwissOutDTO execute(JwissInDTO inDTO) {
 
 	JwissOutDTO out = new JwissOutDTO();
@@ -65,7 +74,8 @@ public class JwissEngineService {
 		    }
 
 		} else {
-		    throw new Exception("Plugin não encontrado: " + command.getParentName());
+		    throw new Exception(
+			    "Plugin não encontrado: " + command.getParentName());
 
 		}
 
