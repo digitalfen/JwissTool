@@ -14,6 +14,7 @@ import com.digitalfen.jwiss.devkit.handlers.JwissLogger;
 import com.digitalfen.jwiss.devkit.interfaces.JwissLoaderInterface;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Read, load and cache all configurations in startup.
@@ -22,6 +23,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class JwissConfigLoader implements JwissLoaderInterface {
 
+    @Setter
+    private Map<String, String> iniCfg;
+
     /**
      * JwissLoaderInterface
      * 
@@ -29,6 +33,10 @@ public class JwissConfigLoader implements JwissLoaderInterface {
      */
     @Override
     public void init() {
+	if (iniCfg == null) {
+	    iniCfg = new HashMap<>();
+	}
+
 	loadGlobalConfig();
     }
 
@@ -89,7 +97,7 @@ public class JwissConfigLoader implements JwissLoaderInterface {
 		String[] parts = line.split("[=:]");
 		if (parts.length >= 2) {
 		    String key = parts[0].trim();
-		    String value = parts[1].trim();
+		    String value = parts[1].toLowerCase().trim();
 		    propertiesMap.put(key, value);
 		}
 	    }
@@ -99,6 +107,10 @@ public class JwissConfigLoader implements JwissLoaderInterface {
 	} catch (IOException e) {
 	    e.printStackTrace();
 
+	}
+
+	for (Entry<String, String> entry : iniCfg.entrySet()) {
+	    propertiesMap.put(entry.getKey(), entry.getValue());
 	}
 
 	return propertiesMap;

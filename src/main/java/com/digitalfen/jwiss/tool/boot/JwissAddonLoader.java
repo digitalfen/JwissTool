@@ -20,6 +20,7 @@ import com.digitalfen.jwiss.devkit.interfaces.JwissAddonInterface;
 import com.digitalfen.jwiss.devkit.interfaces.JwissLoaderInterface;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Load and cache instaled addons in startup.
@@ -27,6 +28,9 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 public class JwissAddonLoader implements JwissLoaderInterface {
+
+    @Setter
+    private String toLoad;
 
     /**
      * JwissLoaderInterface
@@ -44,6 +48,18 @@ public class JwissAddonLoader implements JwissLoaderInterface {
 
 	} catch (Exception e) {
 	    JwissLogger.printer.error("An error was stopped the addon installation.");
+	    JwissLogger.printer.error(e);
+	}
+
+	try {
+	    JwissLogger.printer.info("Initializing Installed Addons...");
+
+	    startAddons();
+
+	    JwissLogger.printer.info("Installed Addons Initializion Done.");
+
+	} catch (Exception e) {
+	    JwissLogger.printer.error("An error was stopped the addon inicialization.");
 	    JwissLogger.printer.error(e);
 	}
     }
@@ -95,17 +111,27 @@ public class JwissAddonLoader implements JwissLoaderInterface {
 
 		JwissLogger.printer.debug("Found metadata for " + addonClass);
 
-		JwissAddonInterface addonInstance = addonClass.getDeclaredConstructor()
-			.newInstance();
+		if (JwissCache.configurations.get("active-addons") == null
+			|| JwissCache.configurations.get("active-addons")
+				.contains(addonMetadata.name().toLowerCase())) {
 
-		JwissLogger.printer.debug("Addon instance created for " + addonClass);
+		    JwissAddonInterface addonInstance = addonClass
+			    .getDeclaredConstructor()
+			    .newInstance();
 
-		JwissLogger.printer.debug("Caching instance of " + addonClass);
+		    JwissLogger.printer.debug("Addon instance created for " + addonClass);
 
-		JwissCache.addons.put(addonMetadata.name(), addonInstance);
+		    JwissLogger.printer.debug("Caching instance of " + addonClass);
 
-		JwissLogger.printer
-			.debug("Instance of " + addonClass + " cached with success");
+		    JwissCache.addons.put(addonMetadata.name(), addonInstance);
+
+		    JwissLogger.printer
+			    .debug("Instance of " + addonClass + " cached with success");
+		} else {
+		    JwissLogger.printer
+			    .debug(addonClass + "Is not active.");
+		}
+
 	    }
 	}
 	JwissLogger.printer.info("Getting Class reference from JAR files Done.");
