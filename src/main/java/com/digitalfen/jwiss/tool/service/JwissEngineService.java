@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import com.digitalfen.jwiss.devkit.annotations.JwissCommandMetadata;
 import com.digitalfen.jwiss.devkit.dto.request.JwissInDTO;
 import com.digitalfen.jwiss.devkit.dto.response.JwissOutDTO;
+import com.digitalfen.jwiss.devkit.enums.JwissConfigTypeEnum;
 import com.digitalfen.jwiss.devkit.handlers.JwissCache;
 import com.digitalfen.jwiss.devkit.handlers.JwissLogger;
+import com.digitalfen.jwiss.devkit.handlers.JwissUtils;
 import com.digitalfen.jwiss.devkit.interfaces.JwissPluginInterface;
 import com.digitalfen.jwiss.devkit.model.Argument;
 import com.digitalfen.jwiss.devkit.model.Command;
@@ -53,7 +55,8 @@ public class JwissEngineService {
 			    if (commandMetadata.usage().equals(command.getUsage())) {
 
 				for (Argument argument : command.getArguments()) {
-				    JwissCache.configurations.put(plugin,
+				    JwissCache.configurations.put(
+					    plugin,
 					    argument.getKey(),
 					    argument.getValue());
 
